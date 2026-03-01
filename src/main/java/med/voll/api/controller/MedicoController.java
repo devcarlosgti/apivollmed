@@ -28,9 +28,15 @@ public class MedicoController {
 //                .map(DadosListagemMedico::new).toList();
 //    }
 
+//    @GetMapping
+//    public Page<DadosListagemMedico> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
+//        return repository.findAll(paginacao).map(DadosListagemMedico::new);
+//    }
+
+    //trazer so méditos ativos
     @GetMapping
     public Page<DadosListagemMedico> listar(@PageableDefault(size = 10, sort = {"nome"}) Pageable paginacao){
-        return repository.findAll(paginacao).map(DadosListagemMedico::new);
+        return repository.findAllByAtivoTrue(paginacao).map(DadosListagemMedico::new);
     }
 
     @PutMapping
@@ -39,11 +45,18 @@ public class MedicoController {
         var medico = repository.getReferenceById(dados.id());
         medico.atualizarInformacoes(dados);
     }
+//    Mapeamento para deletar
+//    @DeleteMapping("/{id}")
+//    @Transactional
+//    public void excluir(@PathVariable Long id){
+//        repository.deleteById(id);
+//    }
 
+    //Ativar ou desativar medico
     @DeleteMapping("/{id}")
     @Transactional
     public void excluir(@PathVariable Long id){
-        repository.deleteById(id);
+        var medico = repository.getReferenceById(id);
+        medico.excluir();
     }
-
 }
