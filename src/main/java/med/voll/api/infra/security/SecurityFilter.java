@@ -54,6 +54,8 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     FilterChain filterChain)
             throws ServletException, IOException {
 
+//        System.out.println("chamando filter!");
+
         var tokenJWT = recuperarToken(request);
 
         if (tokenJWT != null) {
@@ -62,6 +64,7 @@ public class SecurityFilter extends OncePerRequestFilter {
 
             var authentication = new UsernamePasswordAuthenticationToken(usuario, null, usuario.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
+//            System.out.println("Logado na requisicao");
 
             //System.out.println(subject);
         }
